@@ -1,12 +1,29 @@
 let t = document.querySelector(".timer");
 let btn1 = document.querySelector(".btnstart");
 let s = 0;
-//let i = 1;
+let h = 0;
+let d = 0;
+let m = 0;
+let timeArray = [d, h, m, s];
 let mytimer = null;
-t.innerHTML = s;
+t.innerHTML = timeArray.map((item) => String(item)).join(":");
+function counter() {
+  if (s == 60) {
+    m++;
+    s = 0;
+  } else if (m == 60) {
+    h++;
+    m = 0;
+  } else if (h == 24) {
+    d++;
+    h = 0;
+  }
+}
 function mytimerstart() {
   s = s + 1;
-  t.innerHTML = s;
+  counter();
+  timeArray = [d, h, m, s];
+  t.innerHTML = timeArray.map((item) => String(item)).join(":");
 }
 function stopmytimer() {
   clearInterval(mytimer);
