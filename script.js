@@ -1,12 +1,16 @@
 let t = document.querySelector(".timer");
 let btn1 = document.querySelector(".btnstart");
 let btn2 = document.querySelector("#btnreset");
+let btn3 = document.querySelector("#btnlap")
 let s = 0;
 let h = 0;
 let d = 0;
 let m = 0;
 let timeArray = [d, h, m, s];
 let mytimer = null;
+btn3.addEventListener("click", ()=>{
+  
+})
 t.innerHTML = timeArray
   .map((item) => String(item))
   .map((item) => {
@@ -34,12 +38,12 @@ btn2.addEventListener("click", () => {
       }
     })
     .join(":");
-    btn1.innerHTML="start"
-    stopmytimer();
-    btn2.classList.add("invisible");
-    btn2.classList.remove("visible");
+  btn1.innerHTML = "start";
+  stopmytimer();
+  btn2.classList.add("invisible");
+  btn2.classList.remove("visible");
 });
-if (btn1.innerHTML === "start" ){
+if (btn1.innerHTML === "start") {
   btn2.classList.add("invisible");
 }
 

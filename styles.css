@@ -15,3 +15,8 @@ body {
 .visible {
   visibility: visible;
 }
+#laps{
+    width: 400px;
+    height: 250px;
+    background-color: #000;
+}
