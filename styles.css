@@ -27,7 +27,7 @@ text-align: center;
 .visible {
   visibility: visible;
 }
-#laps{
+#lap-box{
   
     width: 400px;
     background-color: rgba(22, 22, 22,0.5);

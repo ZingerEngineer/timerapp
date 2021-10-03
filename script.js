@@ -1,38 +1,27 @@
-let t = document.querySelector(".timer");
-let btn1 = document.querySelector(".btnstart");
-let btn2 = document.querySelector("#btnreset");
-let btn3 = document.querySelector("#btnlap");
-let laps = document.querySelector("#laps")
+let timer = document.querySelector(".timer");
+let myTimer = null;
+let buttonStart = document.querySelector(".button-start");
+let buttonReset = document.querySelector("#button-reset");
+let buttonLap = document.querySelector("#button-lap");
+let lapBox = document.querySelector("#lap-box");
 let lapArray = [];
-let counterer = 0
-let s = 0;
-let h = 0;
-let d = 0;
-let m = 0;
-let timeArray = [d, h, m, s];
-let mytimer = null;
+let incrementer = 0;
+let days = 0;
+let hours = 0;
+let minutes = 0;
+let seconds = 0;
+let milliseconds = 0;
+let timeArray = [days, hours, minutes, seconds];
 
-t.innerHTML = timeArray
-  .map((item) => String(item))
-  .map((item) => {
-    if (item.length == 1) {
-      return "0" + item;
-    } else {
-      return item;
-    }
-  })
-  .join(":");
+function hideButtonsOnStart() {
+  if (buttonStart.innerHTML === "START") {
+    buttonReset.classList.add("invisible");
+    buttonLap.classList.add("invisible");
+  }
+}
 
-btn2.addEventListener("click", () => {
-  d = 0;
-  m = 0;
-  h = 0;
-  s = 0;
-  document.getElementById("laps").style.height ="0px"
-  laps.innerHTML=""
-  counterer = 0
-  timeArray = [d, h, m, s];
-  t.innerHTML = timeArray
+function writeTimeArray() {
+  let stringTimeArray = timeArray
     .map((item) => String(item))
     .map((item) => {
       if (item.length == 1) {
@@ -42,97 +31,104 @@ btn2.addEventListener("click", () => {
       }
     })
     .join(":");
-  btn1.innerHTML = "start";
-  stopmytimer();
-  btn2.classList.add("invisible");
-  btn2.classList.remove("visible");
-});
-if (btn1.innerHTML === "start") {
-  btn2.classList.add("invisible");
-  btn3.classList.add("invisible");
+  return stringTimeArray;
 }
 
-function counter() {
-  if (s == 60) {
-    m++;
-    s = 0;
-  } else if (m == 60) {
-    h++;
-    m = 0;
-  } else if (h == 24) {
-    d++;
-    h = 0;
+function hideButtonReset() {
+  buttonReset.classList.add("invisible");
+  buttonReset.classList.remove("visible");
+}
+
+function showButtonReset() {
+  buttonReset.classList.remove("invisible");
+  buttonReset.classList.add("visible");
+}
+
+function hideButtonLap() {
+  buttonLap.classList.add("invisible");
+  buttonLap.classList.remove("visible");
+}
+
+function showButtonLap() {
+  buttonLap.classList.remove("invisible");
+  buttonLap.classList.add("visible");
+}
+
+function timeIncrementer() {
+  if (seconds == 60) {
+    minutes++;
+    seconds = 0;
+  } else if (minutes == 60) {
+    hours++;
+    minutes = 0;
+  } else if (hours == 24) {
+    days++;
+    hours = 0;
   }
 }
 
 function mytimerstart() {
-  s = s + 1;
-  counter();
-  timeArray = [d, h, m, s];
-  t.innerHTML = timeArray
-    .map((item) => String(item))
-    .map((item) => {
-      if (item.length == 1) {
-        return "0" + item;
-      } else {
-        return item;
-      }
-    })
-    .join(":");
+  seconds = seconds + 1;
+  timeIncrementer();
+  timeArray = [days, hours, minutes, seconds];
+  timer.innerHTML = writeTimeArray();
 }
 
-function stopmytimer() {
-  clearInterval(mytimer);
+function stopTimerInterval() {
+  clearInterval(timerInterval);
 }
 
-btn1.addEventListener("click", () => {
-  if (btn1.innerHTML === "start" || btn1.innerHTML === "resume") {
-    btn2.classList.add("invisible");
-    btn2.classList.remove("visible");
-    btn3.classList.add("visible");
-    btn3.classList.remove("invisible");
-  } else if (btn1.innerHTML === "stop") {
-    btn2.classList.add("visible");
-    btn2.classList.remove("invisible");
-    btn3.classList.add("invisible");
-    btn3.classList.remove("visible");
+hideButtonsOnStart();
+timer.innerHTML = writeTimeArray();
+buttonReset.addEventListener("click", () => {
+  days = 0;
+  hours = 0;
+  minutes = 0;
+  seconds = 0;
+  document.getElementById("lap-box").style.height = "0px";
+  lapBox.innerHTML = "";
+  incrementer = 0;
+  timeArray = [days, hours, minutes, seconds];
+  timer.innerHTML = writeTimeArray();
+  buttonStart.innerHTML = "START";
+  stopTimerInterval();
+  hideButtonReset();
+});
+
+buttonStart.addEventListener("click", () => {
+  if (buttonStart.innerHTML === "START" || buttonStart.innerHTML === "RESUME") {
+    hideButtonReset();
+    showButtonLap();
+  } else if (buttonStart.innerHTML === "STOP") {
+    showButtonReset();
+    hideButtonLap();
   }
 
-  if (btn1.innerHTML == "start") {
-    mytimer = setInterval(mytimerstart, 1000);
-    btn1.innerHTML = "stop";
-  } else if (btn1.innerHTML == "stop") {
-    stopmytimer();
-    mytimer = null;
-    btn1.innerHTML = "resume";
-  } else if (btn1.innerHTML == "resume") {
-    btn1.innerHTML = "stop";
-    mytimer = setInterval(mytimerstart, 1000);
+  if (buttonStart.innerHTML == "START") {
+    timerInterval = setInterval(mytimerstart, 1000);
+    buttonStart.innerHTML = "STOP";
+  } else if (buttonStart.innerHTML == "STOP") {
+    stopTimerInterval();
+    timerInterval = null;
+    buttonStart.innerHTML = "RESUME";
+  } else if (buttonStart.innerHTML == "RESUME") {
+    buttonStart.innerHTML = "STOP";
+    timerInterval = setInterval(mytimerstart, 1000);
   }
 });
 
-btn3.addEventListener("click", () => {
-    document.getElementById("laps").style.height ="250px"
-  timeArray = [d, h, m, s];
-      const newDiv = document.createElement("DIV")
-      counterer++
-      let stringCounter = String(counterer)
-      if (String(counterer).length == 1) {
-        stringCounter =  "0" + counterer;
-      } else {
-        stringCounter=counterer;
-      }
-      newDiv.innerHTML = stringCounter +"&nbsp;&nbsp;&nbsp;"+ timeArray
-      .map((item) => String(item))
-      .map((item) => {
-        if (item.length == 1) {
-          return "0" + item;
-        } else {
-          return item;
-        }
-      })
-      .join(":")
+buttonLap.addEventListener("click", () => {
+  document.getElementById("lap-box").style.height = "250px";
+  timeArray = [days, hours, minutes, seconds];
+  const newDiv = document.createElement("DIV");
+  incrementer++;
+  let stringCounter = String(incrementer);
+  if (String(incrementer).length == 1) {
+    stringCounter = "0" + incrementer;
+  } else {
+    stringCounter = incrementer;
+  }
+  newDiv.innerHTML = stringCounter + "&nbsp;&nbsp;&nbsp;" + writeTimeArray();
 
-      laps.appendChild(newDiv)
-    });
-    
+  lapBox.appendChild(newDiv);
+});
