@@ -10,7 +10,6 @@ let days = 0;
 let hours = 0;
 let minutes = 0;
 let seconds = 0;
-let milliseconds = 0;
 let timeArray = [days, hours, minutes, seconds];
 
 function hideButtonsOnStart() {
@@ -125,10 +124,7 @@ buttonLap.addEventListener("click", () => {
   let stringCounter = String(incrementer);
   if (String(incrementer).length == 1) {
     stringCounter = "0" + incrementer;
-  } else {
-    stringCounter = incrementer;
-  }
+  } else {stringCounter = incrementer;}
   newDiv.innerHTML = stringCounter + "&nbsp;&nbsp;&nbsp;" + writeTimeArray();
-
   lapBox.appendChild(newDiv);
-});
+})
